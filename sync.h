@@ -72,13 +72,17 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
             int pos = 1;
             for(const QString& emt : emts)
             {
-                if (pos == 1 && ifIntegerInRange(emt, -2147483647, 2147483647))
+                if (pos == 1)
                 {
-                    Error a;
-                    a.type = Error::noModeForAction;
-                    a.stringElement = emt;
-                    a.stringNumber = string;
-                    errors.insert(a);
+                    QString emt_type = whatIsElement(emt, pos);
+                    if (emt_type == "int")
+                    {
+                        Error a;
+                        a.type = Error::noModeForAction;
+                        a.stringElement = emt;
+                        a.stringNumber = string;
+                        errors.insert(a);
+                    }
                 }
             }
         }
