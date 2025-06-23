@@ -4,6 +4,8 @@
 #include "error.h"
 #include <QObject>
 
+int error_count = 0;
+
 void readUserActions (QString actions, QList<int> &actionAfterAction, QSet<Error> &errors);
 
 void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction, QSet<Error> &errors);
