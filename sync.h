@@ -5,16 +5,48 @@
 #include "error.cpp"
 #include <QObject>
 #include <QSet>
+#include <QList>
 
 int error_count = 0;
+
+
+bool ifIntegerInRange (QString element, int min, int max);
+
 
 void readUserActions (QString actions, QList<int> &actionAfterAction, QSet<Error> &errors)
 {
     if (actions.contains("\n"))
     {
-        Error one;
-        one.type = Error::moreThanOneString;
-        errors.insert(one);
+        Error a;
+        a.type = Error::moreThanOneString;
+        errors.insert(a);
+    }
+    else
+    {
+        char delimiter = ' ';
+
+        // Строка ввода разбивается по пробелам
+        QStringList elements = actions.split(delimiter);
+
+        int position = 1;
+
+        for(const QString& element : elements)
+        {
+            if (ifIntegerInRange(element, -2147483647, 2147483647))
+            {
+                actionAfterAction.append(element.toInt());
+            }
+            else
+            {
+                Error a;
+                a.type = Error::notInteger;
+                a.positionElement = element;
+                a.positionNumber = position;
+                errors.insert(a);
+            }
+            position++;
+        }
+
     }
 }
 
