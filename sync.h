@@ -54,7 +54,13 @@ void readUserActions (QString actions, QList<int> &actionAfterAction, QSet<Error
     }
 }
 
-void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction, QSet<Error> &errors);
+void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction, QSet<Error> &errors)
+{
+    char delimiter = '\n';
+
+    // Строка ввода разбивается по пробелам
+    QStringList elements = accords.split(delimiter);
+}
 
 void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<int> &actionAfterAction, QSet<Error> &errors);
 
