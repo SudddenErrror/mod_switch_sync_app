@@ -60,6 +60,29 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
 
     // Строка ввода разбивается по пробелам
     QStringList elements = accords.split(delimiter);
+
+    int string = 1;
+
+    for(const QString& element : elements)
+    {
+        char delimiter_1 = ' ';
+        QStringList emts = element.split(delimiter_1);
+        if (!emts.isEmpty())
+        {
+            int pos = 1;
+            for(const QString& emt : emts)
+            {
+                if (pos == 1 && ifIntegerInRange(emt, -2147483647, 2147483647))
+                {
+                    Error a;
+                    a.type = Error::noModeForAction;
+                    a.stringElement = emt;
+                    a.stringNumber = string;
+                    errors.insert(a);
+                }
+            }
+        }
+    }
 }
 
 void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<int> &actionAfterAction, QSet<Error> &errors);
