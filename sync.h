@@ -14,6 +14,8 @@ bool ifIntegerInRange (QString element, int min, int max);
 
 QString whatIsElement(QString element, int el_num);
 
+bool errorDescribed (QSet<Error> &errors, int action, Error::ErrorType type);
+
 
 void readUserActions (QString actions, QList<int> &actionAfterAction, QSet<Error> &errors)
 {
