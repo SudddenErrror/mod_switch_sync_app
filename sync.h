@@ -70,15 +70,33 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
         if (!emts.isEmpty())
         {
             int pos = 1;
+            QString emt_1_type, emt_2_type;
             for(const QString& emt : emts)
             {
                 if (pos == 1)
+                emt_1_type = whatIsElement(emt, pos);
+                if (pos == 2)
+                emt_2_type = whatIsElement(emt, pos);
+                pos++;
+            }
+
+            pos = 1;
+            for(const QString& emt : emts)
+            {
+                if (emt_1_type == "int")
                 {
-                    QString emt_type = whatIsElement(emt, pos);
-                    if (emt_type == "int")
+                    Error a;
+                    a.type = Error::noModeForAction;
+                    a.stringElement = emt;
+                    a.stringNumber = string;
+                    errors.insert(a);
+                }
+                else if (emt_1_type == "none")
+                {
+                    if (emt_2_type == "int")
                     {
                         Error a;
-                        a.type = Error::noModeForAction;
+                        a.type = Error::noActionForMode;
                         a.stringElement = emt;
                         a.stringNumber = string;
                         errors.insert(a);
