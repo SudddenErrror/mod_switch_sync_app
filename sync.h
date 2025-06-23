@@ -96,11 +96,19 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
                     if (emt_2_type == "int")
                     {
                         Error a;
-                        a.type = Error::noActionForMode;
+                        a.type = Error::noModeForAction;
                         a.stringElement = emt;
                         a.stringNumber = string;
                         errors.insert(a);
                     }
+                }
+                else if (emt_2_type == NULL || emt_2_type == "none")
+                {
+                    Error a;
+                    a.type = Error::noActionForMode;
+                    a.stringElement = emt;
+                    a.stringNumber = string;
+                    errors.insert(a);
                 }
             }
         }
