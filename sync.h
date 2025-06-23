@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QSet>
 #include <QList>
+#include <QMap>
 
 int error_count = 0;
 
@@ -70,45 +71,55 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
         if (!emts.isEmpty())
         {
             int pos = 1;
-            QString emt_1_type, emt_2_type;
+            QString emt_1_type, emt_2_type, emt_1, emt_2;
             for(const QString& emt : emts)
             {
                 if (pos == 1)
-                emt_1_type = whatIsElement(emt, pos);
+                {
+                    emt_1_type = whatIsElement(emt, pos);
+                    emt_1 = emt;
+                }
                 if (pos == 2)
-                emt_2_type = whatIsElement(emt, pos);
+                {
+                    emt_2_type = whatIsElement(emt, pos);
+                    emt_2 = emt;
+                }
                 pos++;
             }
 
-            pos = 1;
-            for(const QString& emt : emts)
+            if (emt_1_type == "int")
             {
-                if (emt_1_type == "int")
+                Error a;
+                a.type = Error::noModeForAction;
+                a.stringElement = emt_1;
+                a.stringNumber = string;
+                errors.insert(a);
+            }
+            else if (emt_1_type == "none")
+            {
+                if (emt_2_type == "int")
                 {
                     Error a;
                     a.type = Error::noModeForAction;
-                    a.stringElement = emt;
+                    a.stringElement = emt_2;
                     a.stringNumber = string;
                     errors.insert(a);
                 }
-                else if (emt_1_type == "none")
+            }
+            else if (emt_2_type == NULL || emt_2_type == "none")
+            {
+                Error a;
+                a.type = Error::noActionForMode;
+                a.stringElement = emt_1;
+                a.stringNumber = string;
+                errors.insert(a);
+            }
+            else
+            {
+                int a = emt_2.toInt();
+                if (!accordModeAction[a].isNull())
                 {
-                    if (emt_2_type == "int")
-                    {
-                        Error a;
-                        a.type = Error::noModeForAction;
-                        a.stringElement = emt;
-                        a.stringNumber = string;
-                        errors.insert(a);
-                    }
-                }
-                else if (emt_2_type == NULL || emt_2_type == "none")
-                {
-                    Error a;
-                    a.type = Error::noActionForMode;
-                    a.stringElement = emt;
-                    a.stringNumber = string;
-                    errors.insert(a);
+                    accordModeAction[a] = emt_1;
                 }
             }
         }
