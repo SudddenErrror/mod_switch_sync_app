@@ -213,3 +213,79 @@ void Test_Sync::testReadUserAccordancesOneInMany()
 
     QCOMPARE(errors, expected);
 }
+
+
+
+void Test_Sync::testCheckAccordancesOnlyCorrect()
+{
+    QList<int> actionAfterAction = {1, 2, -1};
+    QMap<int, QString> accordModeAction;
+    accordModeAction[0] = 'A';
+    accordModeAction[1] = 'B';
+    accordModeAction[2] = 'C';
+    QSet<Error> errors;
+
+    checkAccordances(accordModeAction, actionAfterAction, errors);
+
+    QCOMPARE(errors.isEmpty(), true);
+}
+
+void Test_Sync::testCheckAccordancesNoModeZero()
+{
+    QList<int> actionAfterAction = {1, 2, -1};
+    QMap<int, QString> accordModeAction;
+    accordModeAction[1] = 'B';
+    accordModeAction[2] = 'C';
+    accordModeAction[3] = 'D';
+    QSet<Error> errors;
+
+    checkAccordances(accordModeAction, actionAfterAction, errors);
+
+    Error one;
+    one.type = Error::noStartingMode;
+    QList<Error> expected = {one};
+
+    QCOMPARE(errors, expected);
+}
+
+void Test_Sync::testCheckAccordancesNoAccordance()
+{
+    QList<int> actionAfterAction = {1, 2, 3};
+    QMap<int, QString> accordModeAction;
+    accordModeAction[0] = 'A';
+    accordModeAction[1] = 'B';
+    accordModeAction[2] = 'C';
+    QSet<Error> errors;
+
+    checkAccordances(accordModeAction, actionAfterAction, errors);
+
+    Error one;
+    one.type = Error::noAccordance;
+    one.positionElement = "3";
+    one.positionNumber = 3;
+    QList<Error> expected = {one};
+
+    QCOMPARE(errors, expected);
+}
+
+void Test_Sync::testCheckAccordancesNoAccordances()
+{
+    QList<int> actionAfterAction = {1, 2, 3};
+    QMap<int, QString> accordModeAction;
+    accordModeAction[0] = 'A';
+    accordModeAction[1] = 'B';
+    QSet<Error> errors;
+
+    checkAccordances(accordModeAction, actionAfterAction, errors);
+
+    Error one, two;
+    one.type = Error::noAccordance;
+    one.positionElement = "3";
+    one.positionNumber = 3;
+    two.type = Error::noAccordance;
+    two.positionElement = "2";
+    two.positionNumber = 2;
+    QList<Error> expected = {one, two};
+
+    QCOMPARE(errors, expected);
+}
