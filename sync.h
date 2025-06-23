@@ -12,6 +12,8 @@ int error_count = 0;
 
 bool ifIntegerInRange (QString element, int min, int max);
 
+QString whatIsElement(QString element, int el_num);
+
 
 void readUserActions (QString actions, QList<int> &actionAfterAction, QSet<Error> &errors)
 {
