@@ -17,6 +17,6 @@ private slots:
     void testReadUserActionsHasBreaks();
     void testReadUserActionsHasNonInts();
 
-}
+};
 
 #endif // TEST_SYNC_H
