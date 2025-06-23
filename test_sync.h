@@ -17,6 +17,15 @@ private slots:
     void testReadUserActionsHasBreaks();
     void testReadUserActionsHasNonInts();
 
+    void testReadUserAccordancesEmptyString();
+    void testReadUserAccordancesOnlyCorrect();
+    void testReadUserAccordancesBreakMissing();
+    void testReadUserAccordancesElementMissing();
+    void testReadUserAccordancesHasIncorrect();
+    void testReadUserAccordancesBothIncorrect();
+    void testReadUserAccordancesBreakDoubling();
+    void testReadUserAccordancesOneInMany();
+
 };
 
 #endif // TEST_SYNC_H
