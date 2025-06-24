@@ -145,6 +145,18 @@ void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<i
         a.type = Error::noStartingMode;
         errors.insert(a);
     }
+    for (int i = 0; i < actionAfterAction.length(); i++)
+    {
+        int j = actionAfterAction[i];
+        if (accordModeAction[j].isNull())
+        {
+            Error a;
+            a.type = Error::noAccordance;
+            a.positionElement = j;
+            a.positionNumber = i;
+            errors.insert(a);
+        }
+    }
 }
 
 void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<int, QString> &accordModeAction, QList<int> &modeAfterMode, QSet<Error> &errors);
