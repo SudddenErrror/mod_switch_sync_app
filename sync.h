@@ -159,6 +159,18 @@ void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<i
     }
 }
 
-void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<int, QString> &accordModeAction, QList<int> &modeAfterMode, QSet<Error> &errors);
+void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<int, QString> &accordModeAction, QList<int> &modeAfterMode, QSet<Error> &errors)
+{
+    QList<int> unfinished;
+
+    for (int i = 0; i < actionAfterAction.length(); i++)
+    {
+        int j = actionAfterAction[i];
+        if (j > 0)
+        {
+            unfinished.append(j);
+        }
+    }
+}
 
 #endif // SYNC_H
