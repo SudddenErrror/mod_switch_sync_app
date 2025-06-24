@@ -300,7 +300,7 @@ void Test_Sync::testGenerateActionModeLists_EndNoStart()
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
     QSet<Error> errors;
-    QList<int> modeAfterMode;
+    QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
@@ -324,7 +324,7 @@ void Test_Sync::testGenerateActionModeLists_NoOverlap_ReturnToStart()
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
     QSet<Error> errors;
-    QList<int> modeAfterMode;
+    QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
@@ -342,7 +342,7 @@ void Test_Sync::testGenerateActionModeLists_HasOverlap_ReturnToStart_Reversed()
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
     QSet<Error> errors;
-    QList<int> modeAfterMode;
+    QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
@@ -361,7 +361,7 @@ void Test_Sync::testGenerateActionModeLists_HasOverlap_ReturnToStart_Straight()
     accordModeAction[2] = 'C';
     accordModeAction[3] = 'D';
     QSet<Error> errors;
-    QList<int> modeAfterMode;
+    QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
@@ -380,7 +380,7 @@ void Test_Sync::testGenerateActionModeLists_HasOverlap_NoReturn_Random()
     accordModeAction[2] = 'C';
     accordModeAction[3] = 'D';
     QSet<Error> errors;
-    QList<int> modeAfterMode;
+    QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
@@ -399,7 +399,7 @@ void Test_Sync::testGenerateActionModeLists_HasOverlap_OneModeManyActions()
     accordModeAction[2] = 'B';
     accordModeAction[3] = 'C';
     QSet<Error> errors;
-    QList<int> modeAfterMode;
+    QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 

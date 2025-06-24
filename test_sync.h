@@ -2,6 +2,7 @@
 #define TEST_SYNC_H
 
 #include "error.h"
+#include "sync.h"
 #include <QObject>
 
 class Test_Sync : public QObject
