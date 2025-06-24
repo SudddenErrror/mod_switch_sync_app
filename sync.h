@@ -116,10 +116,21 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
             }
             else
             {
-                int a = emt_2.toInt();
-                if (accordModeAction[a].isNull())
+                int i = emt_2.toInt();
+                if (accordModeAction[i].isNull())
                 {
-                    accordModeAction[a] = emt_1;
+                    accordModeAction[i] = emt_1;
+                }
+                else
+                {
+                    QString described = accordModeAction[i];
+                    Error a;
+                    a.type = Error::moreThanOneModeAccordance;
+                    a.moreThanOneModeAccordanceString.append(string);
+                    a.moreThanOneModeAccordanceContent.append(described);
+                    a.moreThanOneModeAccordanceContent.append(emt_1);
+                    a.moreThanOneModeAction = i;
+                    errors.insert(a);
                 }
             }
         }
