@@ -106,7 +106,7 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
                     errors.insert(a);
                 }
             }
-            else if (emt_2_type == NULL || emt_2_type == "none")
+            else if (emt_2_type.isNull() || emt_2_type == "none")
             {
                 Error a;
                 a.type = Error::noActionForMode;
@@ -137,7 +137,15 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
     }
 }
 
-void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<int> &actionAfterAction, QSet<Error> &errors);
+void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<int> &actionAfterAction, QSet<Error> &errors)
+{
+    if (accordModeAction[0].isNull())
+    {
+        Error a;
+        a.type = Error::noStartingMode;
+        errors.insert(a);
+    }
+}
 
 void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<int, QString> &accordModeAction, QList<int> &modeAfterMode, QSet<Error> &errors);
 
