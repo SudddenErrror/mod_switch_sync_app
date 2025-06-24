@@ -25,7 +25,38 @@ bool ifIntegerInRange (QString element, int min, int max)
     return true;
 }
 
-QString whatIsElement(QString element, int el_num);
+QString whatIsElement(QString element, int el_num)
+{
+    if (el_num == 1)
+    {
+        bool ok;
+        int num = element.toInt(&ok);
+
+        if(ok)
+            return "int";
+
+        for (int i = 0; i < element.length(); i++)
+        {
+            if (element[i] != "_" && !element[i].isLetter())
+            {
+                return "none";
+            }
+        }
+
+        return "string";
+    }
+
+    else if (el_num == 2)
+    {
+        bool ok;
+        int num = element.toInt(&ok);
+
+        if(ok)
+            return "int";
+
+        return "none";
+    }
+}
 
 bool errorDescribed (QSet<Error> &errors, int action, Error::ErrorType type);
 
