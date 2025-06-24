@@ -58,7 +58,17 @@ QString whatIsElement(QString element, int el_num)
     }
 }
 
-bool errorDescribed (QSet<Error> &errors, int action, Error::ErrorType type);
+bool errorDescribed (QSet<Error> &errors, int action, Error::ErrorType type)
+{
+    foreach(const Error& er, errors)
+    {
+        if (er.moreThanOneModeAction == action)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
 
 void readUserActions (QString actions, QList<int> &actionAfterAction, QSet<Error> &errors)
