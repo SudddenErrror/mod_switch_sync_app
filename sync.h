@@ -11,7 +11,19 @@
 int error_count = 0;
 
 
-bool ifIntegerInRange (QString element, int min, int max);
+bool ifIntegerInRange (QString element, int min, int max)
+{
+    bool ok;
+    int num = element.toInt(&ok);
+
+    if(!ok)
+        return false;
+
+    if(num < min || num > max)
+        return false;
+
+    return true;
+}
 
 QString whatIsElement(QString element, int el_num);
 
@@ -159,8 +171,11 @@ void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<i
     }
 }
 
-void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<int, QString> &accordModeAction, QList<int> &modeAfterMode, QSet<Error> &errors)
+void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<int, QString> &accordModeAction, QList<QString> &modeAfterMode, QSet<Error> &errors)
 {
+    QString start = accordModeAction[0];
+    modeAfterMode.append(start);
+
     QList<int> unfinished;
 
     for (int i = 0; i < actionAfterAction.length(); i++)
@@ -193,6 +208,9 @@ void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<in
                 errors.insert(a);
             }
         }
+        int key = unfinished.last();
+        QString current_mode = accordModeAction[key];
+        modeAfterMode.append(current_mode);
     }
 }
 
