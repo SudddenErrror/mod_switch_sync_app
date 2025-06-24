@@ -117,7 +117,7 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
             else
             {
                 int a = emt_2.toInt();
-                if (!accordModeAction[a].isNull())
+                if (accordModeAction[a].isNull())
                 {
                     accordModeAction[a] = emt_1;
                 }
