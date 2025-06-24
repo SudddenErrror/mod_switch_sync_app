@@ -172,12 +172,25 @@ void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<in
         }
         else if (j < 0)
         {
+            int found = -1;
             for (int k = unfinished.length() - 1; k > -1; k++)
             {
                 if (unfinished[k] == j)
                 {
-                    unfinished.removeAt(k);
+                    found = k;
                 }
+            }
+            if (found > -1)
+            {
+                unfinished.removeAt(found);
+            }
+            else
+            {
+                Error a;
+                a.type = Error::endWithNoStart;
+                a.positionElement = j;
+                a.positionNumber = i;
+                errors.insert(a);
             }
         }
     }
