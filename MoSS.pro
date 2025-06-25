@@ -1,4 +1,4 @@
-QT += gui
+QT -= gui
 QT += testlib
 
 CONFIG += c++11 console
@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         error.cpp \
         main.cpp \
+        sync.cpp \
         test_sync.cpp
 
 # Default rules for deployment.
