@@ -31,16 +31,16 @@ public:
         return( (type == e.type && stringNumber == e.stringNumber && positionNumber == e.positionNumber) );
     }
 
-    QString generateErrorMessage()
+    QString generateErrorMessage() const
     {
         QString toReturn;
 
-        if (Error::type == moreThanOneString)
+        if (type == moreThanOneString)
         {
             toReturn.append("Данные о последовательности действий пользователя записываются в одной строке.");
         }
 
-        if (Error::type == notInteger)
+        if (type == notInteger)
         {
             toReturn.append("Элемент \"");
             toReturn.append(positionElement);
@@ -49,7 +49,7 @@ public:
             toReturn.append(") не является целым числом.");
         }
 
-        if (Error::type == noModeForAction)
+        if (type == noModeForAction)
         {
             toReturn.append("Действию \"");
             toReturn.append(stringElement);
@@ -58,7 +58,7 @@ public:
             toReturn.append(") не соответствует режим работы программы.");
         }
 
-        if (Error::type == noActionForMode)
+        if (type == noActionForMode)
         {
             toReturn.append("Режиму \"");
             toReturn.append(stringElement);
@@ -67,12 +67,12 @@ public:
             toReturn.append(") не соответствует действие пользователя.");
         }
 
-        if (Error::type == noStartingMode)
+        if (type == noStartingMode)
         {
             toReturn.append("Отсутствует начальный режим. Одному из режимов должно соответствовать действие пользователя 0.");
         }
 
-        if (Error::type == noAccordance)
+        if (type == noAccordance)
         {
             toReturn.append("Пользователь не имеет заданного режима для действия");
             toReturn.append(positionElement);
@@ -81,7 +81,7 @@ public:
             toReturn.append(").");
         }
 
-        if (Error::type == endWithNoStart)
+        if (type == endWithNoStart)
         {
             toReturn.append("Действие \"");
             toReturn.append(positionElement);
@@ -90,7 +90,7 @@ public:
             toReturn.append(") завершается в тот момент, когда оно ещё не было начато.");
         }
 
-        if (Error::type == moreThanOneModeAccordance)
+        if (type == moreThanOneModeAccordance)
         {
             toReturn.append("Действию пользователя \"");
             toReturn.append(moreThanOneModeAction);
@@ -105,12 +105,12 @@ public:
             toReturn.append(").");
         }
 
-        if (Error::type == inFileNotExist)
+        if (type == inFileNotExist)
         {
             toReturn.append("Неверно указан файл с входными данными. Возможно, файл не существует.");
         }
 
-        if (Error::type == outFileCreateFail)
+        if (type == outFileCreateFail)
         {
             toReturn.append("Неверно указан файл для выходных данных. Возможно указанного расположения не существует или нет прав на запись.");
         }

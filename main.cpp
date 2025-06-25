@@ -104,13 +104,14 @@ int main(int argc, char *argv[])
                 QString firstRow;
                 QString secondRow;
 
+                firstRow.append("   ");
                 secondRow.append(accordModeAction[0]);
 
                 for(int i = 0; i < actionAfterAction.length(); i++)
                 {
 
-                    firstRow.append("      ");
                     firstRow.append(actionAfterAction[i]);
+                    firstRow.append("      ");
 
                     secondRow.append("      ");
                     secondRow.append(modeAfterMode[i]);
@@ -131,8 +132,47 @@ int main(int argc, char *argv[])
 
             }
 
+            else
+            {
+                QTextStream out(&outputFile);
+
+                foreach(const Error& er, errors)
+                {
+                    QString toOut = er.generateErrorMessage();
+                    out << toOut << endl;
+                }
+
+                outputFile.close();
+            }
+
         }
 
+        else
+        {
+            QTextStream out(&outputFile);
+
+            foreach(const Error& er, errors)
+            {
+                QString toOut = er.generateErrorMessage();
+                out << toOut << endl;
+            }
+
+            outputFile.close();
+        }
+
+    }
+
+    else
+    {
+        QTextStream out(&outputFile);
+
+        foreach(const Error& er, errors)
+        {
+            QString toOut = er.generateErrorMessage();
+            out << toOut << endl;
+        }
+
+        outputFile.close();
     }
 
     return a.exec();

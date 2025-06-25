@@ -41,9 +41,9 @@ QString whatIsElement(QString element, int el_num)
 
         if(ok)
             return "int";
-
-        return "none";
     }
+
+    return "none";
 }
 
 bool errorDescribed (set<Error> &errors, int action, Error::ErrorType type)
