@@ -1,6 +1,6 @@
 #include <QTest>
+#include "error.cpp"
 #include "test_sync.h"
-#include "sync.h"
 
 Test_Sync::Test_Sync(QObject *parent) :
     QObject(parent)
@@ -13,19 +13,19 @@ void Test_Sync::testReadUserActionsEmptyString()
 {
     QString actions;
     QList<int> actionAfterAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserActions (actions, actionAfterAction, errors);
 
     QCOMPARE(actionAfterAction.isEmpty(), true);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testReadUserActionsOnlyInts()
 {
     QString actions = "2 3 1 -2 -3 -1";
     QList<int> actionAfterAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
 
     readUserActions (actions, actionAfterAction, errors);
@@ -33,20 +33,20 @@ void Test_Sync::testReadUserActionsOnlyInts()
     QList<int> expected = {2, 3, 1, -2, -3, -1};
 
     QCOMPARE(actionAfterAction, expected);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testReadUserActionsHasBreaks()
 {
     QString actions = " \n   \n ";
     QList<int> actionAfterAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserActions (actions, actionAfterAction, errors);
 
     Error one;
     one.type = Error::moreThanOneString;
-    QList<Error> expected = {one};
+    set<Error> expected = {one};
 
     QCOMPARE(errors, expected);
 }
@@ -55,7 +55,7 @@ void Test_Sync::testReadUserActionsHasNonInts()
 {
     QString actions = "2 3 i1 -2 _3 ,+1";
     QList<int> actionAfterAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserActions (actions, actionAfterAction, errors);
 
@@ -69,7 +69,7 @@ void Test_Sync::testReadUserActionsHasNonInts()
     three.type = Error::notInteger;
     three.positionElement = ",+1";
     three.positionNumber = 6;
-    QList<Error> expected = {one, two, three};
+    set<Error> expected = {one, two, three};
 
     QCOMPARE(errors, expected);
 }
@@ -79,19 +79,19 @@ void Test_Sync::testReadUserAccordancesEmptyString()
 {
     QString accords;
     QMap<int, QString> accordModeAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserAccordances (accords, accordModeAction, errors);
 
     QCOMPARE(accordModeAction.isEmpty(), true);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testReadUserAccordancesOnlyCorrect()
 {
     QString accords = "A 0\nB 2\nD 3";
     QMap<int, QString> accordModeAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserAccordances (accords, accordModeAction, errors);
 
@@ -101,14 +101,14 @@ void Test_Sync::testReadUserAccordancesOnlyCorrect()
     expected[3] = 'D';
 
     QCOMPARE(accordModeAction, expected);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testReadUserAccordancesBreakMissing()
 {
     QString accords = "A 0\nB 2 D 3";
     QMap<int, QString> accordModeAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserAccordances (accords, accordModeAction, errors);
 
@@ -117,14 +117,14 @@ void Test_Sync::testReadUserAccordancesBreakMissing()
     expected[2] = 'B';
 
     QCOMPARE(accordModeAction, expected);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testReadUserAccordancesElementMissing()
 {
     QString actions = "A 0\nB\n 1\nD 3";
     QMap<int, QString> accordModeAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserAccordances (actions, accordModeAction, errors);
 
@@ -135,7 +135,7 @@ void Test_Sync::testReadUserAccordancesElementMissing()
     two.type = Error::noModeForAction;
     two.stringElement = "1";
     two.stringNumber = 3;
-    QList<Error> expected = {one, two};
+    set<Error> expected = {one, two};
 
     QCOMPARE(errors, expected);
 }
@@ -144,7 +144,7 @@ void Test_Sync::testReadUserAccordancesHasIncorrect()
 {
     QString actions = "A 0\nB 2\n-C 1\nD i3";
     QMap<int, QString> accordModeAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserAccordances (actions, accordModeAction, errors);
 
@@ -155,7 +155,7 @@ void Test_Sync::testReadUserAccordancesHasIncorrect()
     two.type = Error::noActionForMode;
     two.stringElement = "D";
     two.stringNumber = 4;
-    QList<Error> expected = {one, two};
+    set<Error> expected = {one, two};
 
     QCOMPARE(errors, expected);
 }
@@ -164,7 +164,7 @@ void Test_Sync::testReadUserAccordancesBothIncorrect()
 {
     QString actions = "C 0\nB 2\n-A i1\n+_D 0.3";
     QMap<int, QString> accordModeAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserAccordances (actions, accordModeAction, errors);
 
@@ -175,7 +175,7 @@ void Test_Sync::testReadUserAccordancesBothIncorrect()
     two.type = Error::noActionForMode;
     two.stringElement = "+_D";
     two.stringNumber = 4;
-    QList<Error> expected = {one, two};
+    set<Error> expected = {one, two};
 
     QCOMPARE(errors, expected);
 }
@@ -184,7 +184,7 @@ void Test_Sync::testReadUserAccordancesBreakDoubling()
 {
     QString actions = "A 0\n\nD 3";
     QMap<int, QString> accordModeAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserAccordances (actions, accordModeAction, errors);
 
@@ -193,14 +193,14 @@ void Test_Sync::testReadUserAccordancesBreakDoubling()
     expected[3] = 'D';
 
     QCOMPARE(accordModeAction, expected);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testReadUserAccordancesOneInMany()
 {
     QString actions = "Z 0\nA 1\nB 2\nD 3\nE 2\nF 2";
     QMap<int, QString> accordModeAction;
-    QSet<Error> errors;
+    set<Error> errors;
 
     readUserAccordances (actions, accordModeAction, errors);
 
@@ -209,7 +209,7 @@ void Test_Sync::testReadUserAccordancesOneInMany()
     one.moreThanOneModeAction = '2';
     one.moreThanOneModeAccordanceString = {3, 5, 6};
     one.moreThanOneModeAccordanceContent = {"B", "E", "F"};
-    QList<Error> expected = {one};
+    set<Error> expected = {one};
 
     QCOMPARE(errors, expected);
 }
@@ -223,11 +223,11 @@ void Test_Sync::testCheckAccordancesOnlyCorrect()
     accordModeAction[0] = 'A';
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
-    QSet<Error> errors;
+    set<Error> errors;
 
     checkAccordances(accordModeAction, actionAfterAction, errors);
 
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testCheckAccordancesNoModeZero()
@@ -237,13 +237,13 @@ void Test_Sync::testCheckAccordancesNoModeZero()
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
     accordModeAction[3] = 'D';
-    QSet<Error> errors;
+    set<Error> errors;
 
     checkAccordances(accordModeAction, actionAfterAction, errors);
 
     Error one;
     one.type = Error::noStartingMode;
-    QList<Error> expected = {one};
+    set<Error> expected = {one};
 
     QCOMPARE(errors, expected);
 }
@@ -255,7 +255,7 @@ void Test_Sync::testCheckAccordancesNoAccordance()
     accordModeAction[0] = 'A';
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
-    QSet<Error> errors;
+    set<Error> errors;
 
     checkAccordances(accordModeAction, actionAfterAction, errors);
 
@@ -263,7 +263,7 @@ void Test_Sync::testCheckAccordancesNoAccordance()
     one.type = Error::noAccordance;
     one.positionElement = "3";
     one.positionNumber = 3;
-    QList<Error> expected = {one};
+    set<Error> expected = {one};
 
     QCOMPARE(errors, expected);
 }
@@ -274,7 +274,7 @@ void Test_Sync::testCheckAccordancesNoAccordances()
     QMap<int, QString> accordModeAction;
     accordModeAction[0] = 'A';
     accordModeAction[1] = 'B';
-    QSet<Error> errors;
+    set<Error> errors;
 
     checkAccordances(accordModeAction, actionAfterAction, errors);
 
@@ -285,7 +285,7 @@ void Test_Sync::testCheckAccordancesNoAccordances()
     two.type = Error::noAccordance;
     two.positionElement = "2";
     two.positionNumber = 2;
-    QList<Error> expected = {one, two};
+    set<Error> expected = {one, two};
 
     QCOMPARE(errors, expected);
 }
@@ -299,7 +299,7 @@ void Test_Sync::testGenerateActionModeLists_EndNoStart()
     accordModeAction[0] = 'A';
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
-    QSet<Error> errors;
+    set<Error> errors;
     QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
@@ -311,7 +311,7 @@ void Test_Sync::testGenerateActionModeLists_EndNoStart()
     two.type = Error::endWithNoStart;
     two.positionElement = "2";
     two.positionNumber = 4;
-    QList<Error> expected = {one, two};
+    set<Error> expected = {one, two};
 
     QCOMPARE(errors, expected);
 }
@@ -323,15 +323,15 @@ void Test_Sync::testGenerateActionModeLists_NoOverlap_ReturnToStart()
     accordModeAction[0] = 'A';
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
-    QSet<Error> errors;
+    set<Error> errors;
     QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
-    QList<int> expected = {'A', 'B', 'A', 'C', 'A'};
+    QList<QString> expected = {"A", "B", "A", "C", "A"};
 
     QCOMPARE(modeAfterMode, expected);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testGenerateActionModeLists_HasOverlap_ReturnToStart_Reversed()
@@ -341,15 +341,15 @@ void Test_Sync::testGenerateActionModeLists_HasOverlap_ReturnToStart_Reversed()
     accordModeAction[0] = 'A';
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
-    QSet<Error> errors;
+    set<Error> errors;
     QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
-    QList<int> expected = {'A', 'B', 'C', 'B', 'A'};
+    QList<QString> expected = {"A", "B", "C", "B", "A"};
 
     QCOMPARE(modeAfterMode, expected);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testGenerateActionModeLists_HasOverlap_ReturnToStart_Straight()
@@ -360,15 +360,15 @@ void Test_Sync::testGenerateActionModeLists_HasOverlap_ReturnToStart_Straight()
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
     accordModeAction[3] = 'D';
-    QSet<Error> errors;
+    set<Error> errors;
     QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
-    QList<int> expected = {'A', 'B', 'C', 'D', 'D', 'D', 'A'};
+    QList<QString> expected = {"A", "B", "C", "D", "D", "D", "A"};
 
     QCOMPARE(modeAfterMode, expected);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testGenerateActionModeLists_HasOverlap_NoReturn_Random()
@@ -379,15 +379,15 @@ void Test_Sync::testGenerateActionModeLists_HasOverlap_NoReturn_Random()
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'C';
     accordModeAction[3] = 'D';
-    QSet<Error> errors;
+    set<Error> errors;
     QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
-    QList<int> expected = {'A', 'B', 'D', 'B', 'C', 'C'};
+    QList<QString> expected = {"A", "B", "D", "B", "C", "C"};
 
     QCOMPARE(modeAfterMode, expected);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
 
 void Test_Sync::testGenerateActionModeLists_HasOverlap_OneModeManyActions()
@@ -398,13 +398,13 @@ void Test_Sync::testGenerateActionModeLists_HasOverlap_OneModeManyActions()
     accordModeAction[1] = 'B';
     accordModeAction[2] = 'B';
     accordModeAction[3] = 'C';
-    QSet<Error> errors;
+    set<Error> errors;
     QList<QString> modeAfterMode;
 
     generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
-    QList<int> expected = {'A', 'B', 'C', 'B', 'B', 'C', 'A'};
+    QList<QString> expected = {"A", "B", "C", "B", "B", "C", "A"};
 
     QCOMPARE(modeAfterMode, expected);
-    QCOMPARE(errors.isEmpty(), true);
+    QCOMPARE(errors.empty(), true);
 }
