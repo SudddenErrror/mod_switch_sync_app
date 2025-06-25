@@ -33,7 +33,7 @@ void Test_Sync::testReadUserActionsOnlyInts()
     QList<int> expected = {2, 3, 1, -2, -3, -1};
 
     QCOMPARE(actionAfterAction, expected);
-    QCOMPARE(errors.empty(), true);
+    QCOMPARE(errors.empty(), true);;
 }
 
 void Test_Sync::testReadUserActionsHasBreaks()

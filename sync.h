@@ -9,7 +9,7 @@
 
 bool ifIntegerInRange (QString element, int min, int max);
 
-QString whatIsElement(QString element, int el_num);
+QString whatIsElement(QString element, int el_num);;
 
 bool errorDescribed (set<Error> &errors, int action, Error::ErrorType type);
 

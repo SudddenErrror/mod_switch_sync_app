@@ -68,7 +68,7 @@ void readUserActions (QString actions, QList<int> &actionAfterAction, set<Error>
     }
     else
     {
-        char delimiter = ' ';
+        char delimiter = ' ';;
 
         // Строка ввода разбивается по пробелам
         QStringList elements = actions.split(delimiter);
