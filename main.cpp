@@ -71,6 +71,16 @@ int main(int argc, char *argv[])
 
     }
 
+    else
+
+    {
+
+        Error a;
+        a.type = Error::inFileNotExist;
+        errors.insert(a);
+
+    }
+
     return a.exec();
 
     return 0;
