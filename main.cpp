@@ -60,6 +60,15 @@ int main(int argc, char *argv[])
 
         }
 
+        else
+        {
+
+            Error a;
+            a.type = Error::outFileCreateFail;
+            errors.insert(a);
+
+        }
+
     }
 
     return a.exec();
