@@ -12,6 +12,8 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     set<Error> errors;
+    QList<int> actionAfterAction;
+    QMap<int, QString> accordModeAction;
 
     QCoreApplication a(argc, argv);
 
@@ -52,11 +54,15 @@ int main(int argc, char *argv[])
             dataFromFirstFile = contentStr1.replace("\n", "\\n").replace("\r", "");
             firstInputFile.close();
 
+            readUserActions(dataFromFirstFile, actionAfterAction, errors);
+
             QTextStream streamIn2(&secondInputFile);
             dataFromSecondFile = streamIn2.readAll(); // Чтение всего содержимого
             QString contentStr2(dataFromSecondFile.constData());
             dataFromFirstFile = contentStr2.replace("\n", "\\n").replace("\r", "");
             secondInputFile.close();
+
+            readUserAccordances(dataFromSecondFile, accordModeAction, errors);
 
         }
 
