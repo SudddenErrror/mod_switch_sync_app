@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
     set<Error> errors;
     QList<int> actionAfterAction;
     QMap<int, QString> accordModeAction;
+    QList<QString> modeAfterMode;
 
     QCoreApplication a(argc, argv);
 
@@ -84,6 +85,53 @@ int main(int argc, char *argv[])
         Error a;
         a.type = Error::inFileNotExist;
         errors.insert(a);
+
+    }
+
+    if(errors.empty())
+    {
+
+        checkAccordances(accordModeAction, actionAfterAction, errors);
+
+        if(errors.empty())
+        {
+
+            generateActionModeLists(actionAfterAction, accordModeAction, modeAfterMode, errors);
+
+            if(errors.empty())
+            {
+
+                QString firstRow;
+                QString secondRow;
+
+                secondRow.append(accordModeAction[0]);
+
+                for(int i = 0; i < actionAfterAction.length(); i++)
+                {
+
+                    firstRow.append("      ");
+                    firstRow.append(actionAfterAction[i]);
+
+                    secondRow.append("      ");
+                    secondRow.append(modeAfterMode[i]);
+
+                    // Используем поток QTextStream для удобной записи
+                    QTextStream out(&outputFile);
+
+                    // Записываем первую строку
+                    out << firstRow << endl;
+
+                    // Записываем вторую строку
+                    out << secondRow << endl;
+
+                    // Закрываем файл
+                    outputFile.close();
+
+                }
+
+            }
+
+        }
 
     }
 
