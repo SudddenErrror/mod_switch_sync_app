@@ -192,7 +192,7 @@ void Test_Sync::testCheckAccordances()
 }
 
 
-void testGenerateActionModeLists()
+void Test_Sync::testGenerateActionModeLists()
 {
 
     Error one, two, three;
