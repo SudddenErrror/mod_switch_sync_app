@@ -18,6 +18,8 @@ private slots:
     void testReadUserActionsHasBreaks();
     void testReadUserActionsHasNonInts();
 
+    void testReadUserAccordances();
+
     void testReadUserAccordancesEmptyString();
     void testReadUserAccordancesOnlyCorrect();
     void testReadUserAccordancesBreakMissing();
