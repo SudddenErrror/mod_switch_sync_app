@@ -11,6 +11,8 @@ public:
 
 private slots:
 
+    void testReadUserActions();
+
     void testReadUserActionsEmptyString();
     void testReadUserActionsOnlyInts();
     void testReadUserActionsHasBreaks();

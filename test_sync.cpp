@@ -9,57 +9,14 @@ Test_Sync::Test_Sync(QObject *parent) :
 }
 
 
-void Test_Sync::testReadUserActionsEmptyString()
+void Test_Sync::testReadUserActions()
 {
-    QString actions;
-    QList<int> actionAfterAction;
-    set<Error> errors;
-
-    readUserActions (actions, actionAfterAction, errors);
-
-    QCOMPARE(actionAfterAction.isEmpty(), true);
-    QCOMPARE(errors.empty(), true);
-}
-
-void Test_Sync::testReadUserActionsOnlyInts()
-{
-    QString actions = "2 3 1 -2 -3 -1";
-    QList<int> actionAfterAction;
-    set<Error> errors;
-
-
-    readUserActions (actions, actionAfterAction, errors);
-
-    QList<int> expected = {2, 3, 1, -2, -3, -1};
-
-    QCOMPARE(actionAfterAction, expected);
-    QCOMPARE(errors.empty(), true);;
-}
-
-void Test_Sync::testReadUserActionsHasBreaks()
-{
-    QString actions = " \n   \n ";
-    QList<int> actionAfterAction;
-    set<Error> errors;
-
-    readUserActions (actions, actionAfterAction, errors);
-
-    Error one;
-    one.type = Error::moreThanOneString;
-    set<Error> expected = {one};
-
-    QCOMPARE(errors, expected);
-}
-
-void Test_Sync::testReadUserActionsHasNonInts()
-{
-    QString actions = "2 3 i1 -2 _3 ,+1";
-    QList<int> actionAfterAction;
-    set<Error> errors;
-
-    readUserActions (actions, actionAfterAction, errors);
 
     Error one, two, three;
+
+    one.type = Error::moreThanOneString;
+    set<Error> expected1 = {one};
+
     one.type = Error::notInteger;
     one.positionElement = "i1";
     one.positionNumber = 3;
@@ -69,9 +26,30 @@ void Test_Sync::testReadUserActionsHasNonInts()
     three.type = Error::notInteger;
     three.positionElement = ",+1";
     three.positionNumber = 6;
-    set<Error> expected = {one, two, three};
+    set<Error> expected2 = {one, two, three};
 
-    QCOMPARE(errors, expected);
+
+
+    QString actions[4] = { "", "2 3 1 -2 -3 -1", " \n   \n ", "2 3 i1 -2 _3 ,+1" };
+    QList<int> actions_expected[4] = { {}, {2, 3, 1, -2, -3, -1}, {}, {} };
+    set<Error> errors_expected[4] = { {}, {}, {expected1}, {expected2} };
+
+
+    for(int tsts = 0; tsts < 4; tsts++)
+    {
+        QList<int> actionAfterAction;
+        set<Error> errors;
+        readUserActions (actions[tsts], actionAfterAction, errors);
+
+        if(errors_expected[tsts].empty())
+        {
+            QCOMPARE(actionAfterAction, actions_expected[tsts]);
+        }
+
+        QCOMPARE(errors, errors_expected[tsts]);
+
+    }
+
 }
 
 
