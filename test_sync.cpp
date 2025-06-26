@@ -131,81 +131,68 @@ void Test_Sync::testReadUserAccordances()
 
 }
 
-
-
-void Test_Sync::testCheckAccordancesOnlyCorrect()
+void Test_Sync::testCheckAccordances()
 {
-    QList<int> actionAfterAction = {1, 2, -1};
-    QMap<int, QString> accordModeAction;
-    accordModeAction[0] = 'A';
-    accordModeAction[1] = 'B';
-    accordModeAction[2] = 'C';
-    set<Error> errors;
 
-    checkAccordances(accordModeAction, actionAfterAction, errors);
+    Error one, two, three;
 
-    QCOMPARE(errors.empty(), true);
-}
-
-void Test_Sync::testCheckAccordancesNoModeZero()
-{
-    QList<int> actionAfterAction = {1, 2, -1};
-    QMap<int, QString> accordModeAction;
-    accordModeAction[1] = 'B';
-    accordModeAction[2] = 'C';
-    accordModeAction[3] = 'D';
-    set<Error> errors;
-
-    checkAccordances(accordModeAction, actionAfterAction, errors);
-
-    Error one;
     one.type = Error::noStartingMode;
-    set<Error> expected = {one};
+    set<Error> expected2 = {one};
 
-    QCOMPARE(errors, expected);
-}
-
-void Test_Sync::testCheckAccordancesNoAccordance()
-{
-    QList<int> actionAfterAction = {1, 2, 3};
-    QMap<int, QString> accordModeAction;
-    accordModeAction[0] = 'A';
-    accordModeAction[1] = 'B';
-    accordModeAction[2] = 'C';
-    set<Error> errors;
-
-    checkAccordances(accordModeAction, actionAfterAction, errors);
-
-    Error one;
     one.type = Error::noAccordance;
     one.positionElement = "3";
     one.positionNumber = 3;
-    set<Error> expected = {one};
+    set<Error> expected3 = {one};
 
-    QCOMPARE(errors, expected);
-}
-
-void Test_Sync::testCheckAccordancesNoAccordances()
-{
-    QList<int> actionAfterAction = {1, 2, 3};
-    QMap<int, QString> accordModeAction;
-    accordModeAction[0] = 'A';
-    accordModeAction[1] = 'B';
-    set<Error> errors;
-
-    checkAccordances(accordModeAction, actionAfterAction, errors);
-
-    Error one, two;
     one.type = Error::noAccordance;
     one.positionElement = "3";
     one.positionNumber = 3;
     two.type = Error::noAccordance;
     two.positionElement = "2";
     two.positionNumber = 2;
-    set<Error> expected = {one, two};
+    set<Error> expected4 = {one, two};
 
-    QCOMPARE(errors, expected);
+
+
+    QMap<int, QString> map_expected1;
+    map_expected1[0] = 'A';
+    map_expected1[1] = 'B';
+    map_expected1[2] = 'C';
+
+    QMap<int, QString> map_expected2;
+    map_expected2[1] = 'B';
+    map_expected2[2] = 'C';
+    map_expected2[3] = 'D';
+
+    QMap<int, QString> map_expected3;
+    map_expected3[0] = 'A';
+    map_expected3[1] = 'B';
+    map_expected3[2] = 'C';
+
+    QMap<int, QString> map_expected4;
+    map_expected4[0] = 'A';
+    map_expected4[1] = 'B';
+
+
+    QList<int> actions[4] = { {1, 2, -1}, {1, 2, -1}, {1, 2, 3}, {1, 2, 3} };
+    QMap<int, QString> accords[4] = { {map_expected1}, {map_expected2}, {map_expected3}, {map_expected4} };
+    set<Error> errors_expected[4] = { {}, {expected2}, {expected3}, {expected4} };
+
+
+    for(int tsts = 0; tsts < 4; tsts++)
+    {
+
+        set<Error> errors;
+        checkAccordances(accords[tsts], actions[tsts], errors);
+
+        QCOMPARE(errors, errors_expected[tsts]);
+
+    }
+
 }
+
+
+
 
 
 

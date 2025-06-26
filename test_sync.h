@@ -13,26 +13,28 @@ private slots:
 
     void testReadUserActions();
 
-    void testReadUserActionsEmptyString();
+    /*void testReadUserActionsEmptyString();
     void testReadUserActionsOnlyInts();
     void testReadUserActionsHasBreaks();
-    void testReadUserActionsHasNonInts();
+    void testReadUserActionsHasNonInts();*/
 
     void testReadUserAccordances();
 
-    void testReadUserAccordancesEmptyString();
+   /* void testReadUserAccordancesEmptyString();
     void testReadUserAccordancesOnlyCorrect();
     void testReadUserAccordancesBreakMissing();
     void testReadUserAccordancesElementMissing();
     void testReadUserAccordancesHasIncorrect();
     void testReadUserAccordancesBothIncorrect();
     void testReadUserAccordancesBreakDoubling();
-    void testReadUserAccordancesOneInMany();
+    void testReadUserAccordancesOneInMany();*/
 
-    void testCheckAccordancesOnlyCorrect();;
+    void testCheckAccordances();;
+
+    /*void testCheckAccordancesOnlyCorrect();;
     void testCheckAccordancesNoModeZero();
     void testCheckAccordancesNoAccordance();
-    void testCheckAccordancesNoAccordances();
+    void testCheckAccordancesNoAccordances();*/
 
     void testGenerateActionModeLists_EndNoStart();
     void testGenerateActionModeLists_NoOverlap_ReturnToStart();
