@@ -232,7 +232,7 @@ void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<in
             {
                 Error a;
                 a.type = Error::endWithNoStart;
-                a.positionElement = j;
+                a.positionElement = absj;
                 a.positionNumber = i;
                 errors.insert(a);
             }
