@@ -216,9 +216,10 @@ void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<in
         else if (j < 0)
         {
             int found = -1;
+            int absj = abs(j);
             for (int k = unfinished.length() - 1; k > -1; k++)
             {
-                if (unfinished[k] == j)
+                if (unfinished[k] == absj)
                 {
                     found = k;
                 }
