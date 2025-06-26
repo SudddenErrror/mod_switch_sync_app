@@ -11,6 +11,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
+    setlocale(LC_ALL, "Russian");
     set<Error> errors;
     QList<int> actionAfterAction;
     QMap<int, QString> accordModeAction;
