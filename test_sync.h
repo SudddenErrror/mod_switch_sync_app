@@ -29,19 +29,21 @@ private slots:
     void testReadUserAccordancesBreakDoubling();
     void testReadUserAccordancesOneInMany();*/
 
-    void testCheckAccordances();;
+    void testCheckAccordances();
 
     /*void testCheckAccordancesOnlyCorrect();;
     void testCheckAccordancesNoModeZero();
     void testCheckAccordancesNoAccordance();
     void testCheckAccordancesNoAccordances();*/
 
-    void testGenerateActionModeLists_EndNoStart();
+    void testGenerateActionModeLists();
+
+    /*void testGenerateActionModeLists_EndNoStart();
     void testGenerateActionModeLists_NoOverlap_ReturnToStart();
     void testGenerateActionModeLists_HasOverlap_ReturnToStart_Reversed();
     void testGenerateActionModeLists_HasOverlap_ReturnToStart_Straight();
     void testGenerateActionModeLists_HasOverlap_NoReturn_Random();
-    void testGenerateActionModeLists_HasOverlap_OneModeManyActions();
+    void testGenerateActionModeLists_HasOverlap_OneModeManyActions();*/
 
 };
 

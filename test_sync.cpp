@@ -192,123 +192,78 @@ void Test_Sync::testCheckAccordances()
 }
 
 
-
-
-
-
-void Test_Sync::testGenerateActionModeLists_EndNoStart()
+void testGenerateActionModeLists()
 {
-    QList<int> actionAfterAction = {-1, 2, -2, -2};
-    QMap<int, QString> accordModeAction;
-    accordModeAction[0] = 'A';
-    accordModeAction[1] = 'B';
-    accordModeAction[2] = 'C';
-    set<Error> errors;
-    QList<QString> modeAfterMode;
 
-    generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
+    Error one, two, three;
 
-    Error one, two;
     one.type = Error::endWithNoStart;
     one.positionElement = "1";
     one.positionNumber = 1;
     two.type = Error::endWithNoStart;
     two.positionElement = "2";
     two.positionNumber = 4;
-    set<Error> expected = {one, two};
+    set<Error> expected1 = {one, two};
 
-    QCOMPARE(errors, expected);
+    QMap<int, QString> accordModeAction1;
+    accordModeAction1[0] = 'A';
+    accordModeAction1[1] = 'B';
+    accordModeAction1[2] = 'C';
+
+    QMap<int, QString> accordModeAction2;
+    accordModeAction2[0] = 'A';
+    accordModeAction2[1] = 'B';
+    accordModeAction2[2] = 'C';
+
+    QMap<int, QString> accordModeAction3;
+    accordModeAction3[0] = 'A';
+    accordModeAction3[1] = 'B';
+    accordModeAction3[2] = 'C';
+
+    QMap<int, QString> accordModeAction4;
+    accordModeAction4[0] = 'A';
+    accordModeAction4[1] = 'B';
+    accordModeAction4[2] = 'C';
+    accordModeAction4[3] = 'D';
+
+    QMap<int, QString> accordModeAction5;
+    accordModeAction5[0] = 'A';
+    accordModeAction5[1] = 'B';
+    accordModeAction5[2] = 'C';
+    accordModeAction5[3] = 'D';
+
+    QMap<int, QString> accordModeAction6;
+    accordModeAction6[0] = 'A';
+    accordModeAction6[1] = 'B';
+    accordModeAction6[2] = 'C';
+    accordModeAction6[3] = 'D';
+
+
+    QList<int> actionAfterAction[6] = { {-1, 2, -2, -2}, {1, -1, 2, -2}, {1, 2, -2, -1}, {1, 2, 3, -1, -2, -3}, {1, 3, -3, 2, -1}, {1, 3, 2, -1, -2, -3} };
+    QList<QString> expected[6] = { {}, {"A", "B", "A", "C", "A"}, {"A", "B", "C", "B", "A"}, {"A", "B", "C", "D", "D", "D", "A"}, {"A", "B", "D", "B", "C", "C"}, {"A", "B", "C", "B", "B", "C", "A"} };
+    QMap<int, QString> accordModeAction[6] = { accordModeAction1, accordModeAction2, accordModeAction3, accordModeAction4, accordModeAction5, accordModeAction6 };
+    set<Error> errors_expected[6] = { expected1, {}, {}, {}, {}, {} };
+
+
+    for(int tsts = 0; tsts < 6; tsts++)
+    {
+
+        set<Error> errors;
+        QList<QString> modeAfterMode;
+        generateActionModeLists(actionAfterAction[tsts], accordModeAction[tsts], modeAfterMode, errors);
+
+        if(errors_expected[tsts].empty())
+        {
+            QCOMPARE(modeAfterMode, expected[tsts]);
+        }
+
+        QCOMPARE(errors, errors_expected[tsts]);
+
+    }
+
+
+
 }
 
-void Test_Sync::testGenerateActionModeLists_NoOverlap_ReturnToStart()
-{
-    QList<int> actionAfterAction = {1, -1, 2, -2};
-    QMap<int, QString> accordModeAction;
-    accordModeAction[0] = 'A';
-    accordModeAction[1] = 'B';
-    accordModeAction[2] = 'C';
-    set<Error> errors;
-    QList<QString> modeAfterMode;
 
-    generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
 
-    QList<QString> expected = {"A", "B", "A", "C", "A"};
-
-    QCOMPARE(modeAfterMode, expected);
-    QCOMPARE(errors.empty(), true);
-}
-
-void Test_Sync::testGenerateActionModeLists_HasOverlap_ReturnToStart_Reversed()
-{
-    QList<int> actionAfterAction = {1, 2, -2, -1};
-    QMap<int, QString> accordModeAction;
-    accordModeAction[0] = 'A';
-    accordModeAction[1] = 'B';
-    accordModeAction[2] = 'C';
-    set<Error> errors;
-    QList<QString> modeAfterMode;
-
-    generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
-
-    QList<QString> expected = {"A", "B", "C", "B", "A"};
-
-    QCOMPARE(modeAfterMode, expected);
-    QCOMPARE(errors.empty(), true);
-}
-
-void Test_Sync::testGenerateActionModeLists_HasOverlap_ReturnToStart_Straight()
-{
-    QList<int> actionAfterAction = {1, 2, 3, -1, -2, -3};
-    QMap<int, QString> accordModeAction;
-    accordModeAction[0] = 'A';
-    accordModeAction[1] = 'B';
-    accordModeAction[2] = 'C';
-    accordModeAction[3] = 'D';
-    set<Error> errors;
-    QList<QString> modeAfterMode;
-
-    generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
-
-    QList<QString> expected = {"A", "B", "C", "D", "D", "D", "A"};
-
-    QCOMPARE(modeAfterMode, expected);
-    QCOMPARE(errors.empty(), true);
-}
-
-void Test_Sync::testGenerateActionModeLists_HasOverlap_NoReturn_Random()
-{
-    QList<int> actionAfterAction = {1, 3, -3, 2, -1};
-    QMap<int, QString> accordModeAction;
-    accordModeAction[0] = 'A';
-    accordModeAction[1] = 'B';
-    accordModeAction[2] = 'C';
-    accordModeAction[3] = 'D';
-    set<Error> errors;
-    QList<QString> modeAfterMode;
-
-    generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
-
-    QList<QString> expected = {"A", "B", "D", "B", "C", "C"};
-
-    QCOMPARE(modeAfterMode, expected);
-    QCOMPARE(errors.empty(), true);
-}
-
-void Test_Sync::testGenerateActionModeLists_HasOverlap_OneModeManyActions()
-{
-    QList<int> actionAfterAction = {1, 3, 2, -1, -2, -3};
-    QMap<int, QString> accordModeAction;
-    accordModeAction[0] = 'A';
-    accordModeAction[1] = 'B';
-    accordModeAction[2] = 'B';
-    accordModeAction[3] = 'C';
-    set<Error> errors;
-    QList<QString> modeAfterMode;
-
-    generateActionModeLists (actionAfterAction, accordModeAction, modeAfterMode, errors);
-
-    QList<QString> expected = {"A", "B", "C", "B", "B", "C", "A"};
-
-    QCOMPARE(modeAfterMode, expected);
-    QCOMPARE(errors.empty(), true);
-}
