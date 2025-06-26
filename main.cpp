@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QByteArray>
+#include <QTextCodec>
 #include "error.h"
 #include "sync.h"
 
@@ -11,7 +12,6 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    setlocale(LC_ALL, "Russian");
     set<Error> errors;
     QList<int> actionAfterAction;
     QMap<int, QString> accordModeAction;
@@ -136,6 +136,7 @@ int main(int argc, char *argv[])
             else
             {
                 QTextStream out(&outputFile);
+                out.setCodec(QTextCodec::codecForName("cp866"));
 
                 foreach(const Error& er, errors)
                 {
@@ -151,6 +152,7 @@ int main(int argc, char *argv[])
         else
         {
             QTextStream out(&outputFile);
+            out.setCodec(QTextCodec::codecForName("cp866"));
 
             foreach(const Error& er, errors)
             {
@@ -166,6 +168,7 @@ int main(int argc, char *argv[])
     else
     {
         QTextStream out(&outputFile);
+        out.setCodec(QTextCodec::codecForName("cp866"));
 
         foreach(const Error& er, errors)
         {
