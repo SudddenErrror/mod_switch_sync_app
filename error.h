@@ -120,4 +120,6 @@ public:
 
 };
 
+Q_DECLARE_METATYPE(Error)
+
 #endif // ERROR_H

@@ -1,6 +1,11 @@
 #ifndef TEST_SYNC_H
 #define TEST_SYNC_H
 
+#include <QtTest/QtTest>
+#include <QDebug>
+#include <QFile>
+#include <QTextStream>
+
 #include "sync.h"
 
 class Test_Sync : public QObject
@@ -11,6 +16,7 @@ public:
 
 private slots:
 
+    void testReadUserActions_data();
     void testReadUserActions();
 
     /*void testReadUserActionsEmptyString();
@@ -18,6 +24,7 @@ private slots:
     void testReadUserActionsHasBreaks();
     void testReadUserActionsHasNonInts();*/
 
+    void testReadUserAccordances_data();
     void testReadUserAccordances();
 
    /* void testReadUserAccordancesEmptyString();
@@ -29,6 +36,7 @@ private slots:
     void testReadUserAccordancesBreakDoubling();
     void testReadUserAccordancesOneInMany();*/
 
+    void testCheckAccordances_data();
     void testCheckAccordances();
 
     /*void testCheckAccordancesOnlyCorrect();;
@@ -36,6 +44,7 @@ private slots:
     void testCheckAccordancesNoAccordance();
     void testCheckAccordancesNoAccordances();*/
 
+    void testGenerateActionModeLists_data();
     void testGenerateActionModeLists();
 
     /*void testGenerateActionModeLists_EndNoStart();
