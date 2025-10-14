@@ -13,6 +13,7 @@ void Test_Sync::testReadUserActions_data()
 {
 
     qRegisterMetaType<Error>();
+    qRegisterMetaType<set<Error>>();
 
     QTest::addColumn<QString>("actions_string");
     QTest::addColumn<QList<int>>("actions_expected");
@@ -49,6 +50,7 @@ void Test_Sync::testReadUserActions_data()
 void Test_Sync::testReadUserActions()
 {
     qRegisterMetaType<Error>();
+    qRegisterMetaType<set<Error>>();
 
     QFETCH(QString, actions_string);
     QFETCH(QList<int>, actions_expected);

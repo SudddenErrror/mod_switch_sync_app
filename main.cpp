@@ -8,6 +8,9 @@
 #include "error.h"
 #include "sync.h"
 
+#include <QTextCodec>
+#include <locale>
+
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -17,24 +20,25 @@ int main(int argc, char *argv[])
     QMap<int, QString> accordModeAction;
     QList<QString> modeAfterMode;
 
-    QCoreApplication a(argc, argv);
+    //QCoreApplication a(argc, argv);
 
     // Получаем список всех переданных аргументов
-    QStringList args = QCoreApplication::arguments();
+    //QStringList args = QCoreApplication::arguments();
 
-    string input;
+    /*string input;
     cout << " ";
-    cin >> input;
+    cin >> input;*/
 
-    if (args.size() < 4) {
+    if (argc < 4) {
             std::cerr << "Ошибка! Необходимо передать путь к файлам." << std::endl;
             return 1;
     }
 
+
     // Извлекаем имена файлов
-    QString inputFileName1 = args.at(1); // Первый файл для чтения
-    QString inputFileName2 = args.at(2); // Второй файл для чтения
-    QString outputFileName = args.at(3); // Файл для записи
+    QString inputFileName1 = argv[1]; // Первый файл для чтения
+    QString inputFileName2 = argv[2]; // Второй файл для чтения
+    QString outputFileName = argv[3]; // Файл для записи
 
     // Читаем содержимое двух входных файлов
     QString dataFromFirstFile;
@@ -44,16 +48,18 @@ int main(int argc, char *argv[])
     QFile secondInputFile(inputFileName2);
     QFile outputFile(outputFileName);
 
-    if (firstInputFile.open(QIODevice::ReadOnly | QIODevice::Text) && secondInputFile.open(QIODevice::ReadOnly | QIODevice::Text))
+
+
+    if (outputFile.open(QIODevice::WriteOnly | QIODevice::Text))
     {
 
-        if (outputFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        if (firstInputFile.open(QIODevice::ReadOnly | QIODevice::Text) && secondInputFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
 
             QTextStream streamIn1(&firstInputFile);
             dataFromFirstFile = streamIn1.readAll(); // Чтение всего содержимого
             QString contentStr1(dataFromFirstFile.constData());
-            dataFromFirstFile = contentStr1.replace("\n", "\\n").replace("\r", "");
+            dataFromFirstFile = contentStr1.replace("\r", "");
             firstInputFile.close();
 
             readUserActions(dataFromFirstFile, actionAfterAction, errors);
@@ -61,7 +67,7 @@ int main(int argc, char *argv[])
             QTextStream streamIn2(&secondInputFile);
             dataFromSecondFile = streamIn2.readAll(); // Чтение всего содержимого
             QString contentStr2(dataFromSecondFile.constData());
-            dataFromFirstFile = contentStr2.replace("\n", "\\n").replace("\r", "");
+            dataFromSecondFile = contentStr2.replace("\r", "");
             secondInputFile.close();
 
             readUserAccordances(dataFromSecondFile, accordModeAction, errors);
@@ -72,7 +78,7 @@ int main(int argc, char *argv[])
         {
 
             Error a;
-            a.type = Error::outFileCreateFail;
+            a.type = Error::inFileNotExist;
             errors.insert(a);
 
         }
@@ -84,7 +90,7 @@ int main(int argc, char *argv[])
     {
 
         Error a;
-        a.type = Error::inFileNotExist;
+        a.type = Error::outFileCreateFail;
         errors.insert(a);
 
     }
@@ -105,20 +111,21 @@ int main(int argc, char *argv[])
                 QString firstRow;
                 QString secondRow;
 
-                firstRow.append("   ");
                 secondRow.append(accordModeAction[0]);
 
                 for(int i = 0; i < actionAfterAction.length(); i++)
                 {
 
-                    firstRow.append(actionAfterAction[i]);
                     firstRow.append("      ");
+                    firstRow.append(QString::number(actionAfterAction[i]));
 
                     secondRow.append("      ");
-                    secondRow.append(modeAfterMode[i]);
+                    secondRow.append(modeAfterMode[i+1]);
 
                     // Используем поток QTextStream для удобной записи
                     QTextStream out(&outputFile);
+
+                    out.setCodec("Windows-1251");
 
                     // Записываем первую строку
                     out << firstRow << endl;
@@ -126,33 +133,52 @@ int main(int argc, char *argv[])
                     // Записываем вторую строку
                     out << secondRow << endl;
 
-                    // Закрываем файл
-                    outputFile.close();
-
                 }
 
             }
 
             else
             {
-                QTextStream out(&outputFile);
-                out.setCodec(QTextCodec::codecForName("cp866"));
 
-                foreach(const Error& er, errors)
-                {
-                    QString toOut = er.generateErrorMessage();
-                    out << toOut << endl;
-                }
+                    QTextStream out(&outputFile);
 
-                outputFile.close();
+                    out.setCodec("Windows-1251");
+
+                    foreach(const Error& er, errors)
+                    {
+                        QString toOut = er.generateErrorMessage();
+                        out << toOut << endl;
+                    }
             }
 
         }
 
         else
         {
-            QTextStream out(&outputFile);
-            out.setCodec(QTextCodec::codecForName("cp866"));
+
+                QTextStream out(&outputFile);
+
+                out.setCodec("Windows-1251");
+
+                foreach(const Error& er, errors)
+                {
+                    QString toOut = er.generateErrorMessage();
+                    out << toOut << endl;
+                }
+        }
+
+    }
+
+    else
+    {
+        QFile outputFile_err("outError.txt");
+
+        if (outputFile_err.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+
+            QTextStream out(&outputFile_err);
+
+            //setlocale(LC_ALL, "Russian");
 
             foreach(const Error& er, errors)
             {
@@ -160,26 +186,13 @@ int main(int argc, char *argv[])
                 out << toOut << endl;
             }
 
-            outputFile.close();
         }
-
     }
 
-    else
-    {
-        QTextStream out(&outputFile);
-        out.setCodec(QTextCodec::codecForName("cp866"));
+    // Закрываем файл
+    outputFile.close();
 
-        foreach(const Error& er, errors)
-        {
-            QString toOut = er.generateErrorMessage();
-            out << toOut << endl;
-        }
-
-        outputFile.close();
-    }
-
-    return a.exec();
+    //return a.exec();
 
     return 0;
 }

@@ -14,6 +14,7 @@ void Test_Sync::testCheckAccordances_data()
 {
 
     qRegisterMetaType<Error>();
+    qRegisterMetaType<set<Error>>();
     qRegisterMetaType<only_map>();
 
     QTest::addColumn<QList<int>>("actions_list");
@@ -83,6 +84,7 @@ void Test_Sync::testCheckAccordances()
 {
 
     qRegisterMetaType<Error>();
+    qRegisterMetaType<set<Error>>();
     qRegisterMetaType<only_map>();
 
     QFETCH(QList<int>, actions_list);

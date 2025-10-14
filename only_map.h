@@ -13,6 +13,6 @@ public:
     QMap<int, QString> map;
 };
 
-Q_DECLARE_METATYPE(only_map)
+//Q_DECLARE_METATYPE(only_map)
 
 #endif // ONLY_MAP_H

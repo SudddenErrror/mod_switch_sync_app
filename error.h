@@ -33,93 +33,66 @@ public:
 
     QString generateErrorMessage() const
     {
-        QString toReturn;
-
         if (type == moreThanOneString)
         {
-            toReturn.append("Данные о последовательности действий пользователя записываются в одной строке.");
+            return("User's actions must be written in a single string");
         }
 
         if (type == notInteger)
         {
-            toReturn.append("Элемент \"");
-            toReturn.append(positionElement);
-            toReturn.append("\" (позиция: ");
-            toReturn.append(positionNumber);
-            toReturn.append(") не является целым числом.");
+            return("Element \"" + positionElement + "\" (position: " + QString::number(positionNumber) + ") is not a whole number.");
         }
 
         if (type == noModeForAction)
         {
-            toReturn.append("Действию \"");
-            toReturn.append(stringElement);
-            toReturn.append("\" (стр: ");
-            toReturn.append(stringNumber);
-            toReturn.append(") не соответствует режим работы программы.");
+            return("No mode for action \"" + stringElement + "\" (str: " + QString::number(stringNumber) + ").");
         }
 
         if (type == noActionForMode)
         {
-            toReturn.append("Режиму \"");
-            toReturn.append(stringElement);
-            toReturn.append("\" (стр: ");
-            toReturn.append(stringNumber);
-            toReturn.append(") не соответствует действие пользователя.");
+            return("No action for mode \"" + stringElement + "\" (str: " + QString::number(stringNumber) + ").");
         }
 
         if (type == noStartingMode)
         {
-            toReturn.append("Отсутствует начальный режим. Одному из режимов должно соответствовать действие пользователя 0.");
+            return("No starting mode. One of the modes must correspond to action 0.");
         }
 
         if (type == noAccordance)
         {
-            toReturn.append("Пользователь не имеет заданного режима для действия");
-            toReturn.append(positionElement);
-            toReturn.append("\" (позиция: ");
-            toReturn.append(positionNumber);
-            toReturn.append(").");
+            return("User has no given mode for action \"" + QString(positionElement) + "\" (position: "
+            + QString::number(positionNumber) + ").");
         }
 
         if (type == endWithNoStart)
         {
-            toReturn.append("Действие \"");
-            toReturn.append(positionElement);
-            toReturn.append("\" (позиция: ");
-            toReturn.append(positionNumber);
-            toReturn.append(") завершается в тот момент, когда оно ещё не было начато.");
+            return("Action \"" + positionElement + "\" (position: " + QString::number(positionNumber) + ") ends without having been started.");
         }
 
         if (type == moreThanOneModeAccordance)
         {
-            toReturn.append("Действию пользователя \"");
-            toReturn.append(moreThanOneModeAction);
-            toReturn.append("\" соответствует два режима: \"");
-            toReturn.append(moreThanOneModeAccordanceContent[0]);
-            toReturn.append("\" (стр: ");
-            toReturn.append(moreThanOneModeAccordanceString[0]);
-            toReturn.append(") и \"");
-            toReturn.append(moreThanOneModeAccordanceContent[1]);
-            toReturn.append("\" (стр: ");
-            toReturn.append(moreThanOneModeAccordanceString[1]);
-            toReturn.append(").");
+            return ("Two modes for action \"" + QString::number(moreThanOneModeAction) + "\": \""
+            + moreThanOneModeAccordanceContent[0] + "\" (str: " + QString::number(moreThanOneModeAccordanceString[0])
+            + ") and \"" + moreThanOneModeAccordanceContent[1] + "\" (str: " +
+            QString::number(moreThanOneModeAccordanceString[1]) + ").");
         }
 
         if (type == inFileNotExist)
         {
-            toReturn.append("Неверно указан файл с входными данными. Возможно, файл не существует.");
+            return ("The input data file is specified incorrectly. Perhaps, the file does not exist.");
         }
 
         if (type == outFileCreateFail)
         {
-            toReturn.append("Неверно указан файл для выходных данных. Возможно указанного расположения не существует или нет прав на запись.");
+            return ("The input data file is specified incorrectly. Perhaps, the specified location does not exist or there are no write permissions.");
         }
 
-        return toReturn;
+        return "";
     }
 
 };
 
-Q_DECLARE_METATYPE(Error)
+//Q_DECLARE_METATYPE(Error)
+//Q_DECLARE_METATYPE(QSet<Error>)
 
 #endif // ERROR_H

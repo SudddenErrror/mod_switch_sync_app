@@ -30,7 +30,6 @@ QString whatIsElement(QString element, int el_num)
                 return "none";
             }
         }
-
         return "string";
     }
 
@@ -68,30 +67,32 @@ void readUserActions (QString actions, QList<int> &actionAfterAction, set<Error>
     }
     else
     {
-        char delimiter = ' ';;
+        char delimiter = ' ';
 
         // Строка ввода разбивается по пробелам
         QStringList elements = actions.split(delimiter);
 
-        int position = 1;
-
-        for(const QString& element : elements)
+        if(elements[0] != "")
         {
-            if (ifIntegerInRange(element, -2147483647, 2147483647))
-            {
-                actionAfterAction.append(element.toInt());
-            }
-            else
-            {
-                Error a;
-                a.type = Error::notInteger;
-                a.positionElement = element;
-                a.positionNumber = position;
-                errors.insert(a);
-            }
-            position++;
-        }
+            int position = 0;
 
+            for(const QString& element : elements)
+            {
+                if (ifIntegerInRange(element, -2147483647, 2147483647))
+                {
+                    actionAfterAction.append(element.toInt());
+                }
+                else
+                {
+                    Error a;
+                    a.type = Error::notInteger;
+                    a.positionElement = element;
+                    a.positionNumber = position;
+                    errors.insert(a);
+                }
+                position++;
+            }
+        }
     }
 }
 
@@ -99,7 +100,7 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
 {
     char delimiter = '\n';
 
-    // Строка ввода разбивается по пробелам
+    // Строка ввода разбивается по переносам
     QStringList elements = accords.split(delimiter);
 
     int string = 1;
@@ -108,7 +109,7 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
     {
         char delimiter_1 = ' ';
         QStringList emts = element.split(delimiter_1);
-        if (!emts.isEmpty())
+
         {
             int pos = 1;
             QString emt_1_type, emt_2_type, emt_1, emt_2;
@@ -131,7 +132,7 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
             {
                 Error a;
                 a.type = Error::noModeForAction;
-                a.stringElement = emt_1;
+                a.stringElement = QString(emt_1);
                 a.stringNumber = string;
                 errors.insert(a);
             }
@@ -141,7 +142,7 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
                 {
                     Error a;
                     a.type = Error::noModeForAction;
-                    a.stringElement = emt_2;
+                    a.stringElement = QString(emt_2);
                     a.stringNumber = string;
                     errors.insert(a);
                 }
@@ -150,7 +151,7 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
             {
                 Error a;
                 a.type = Error::noActionForMode;
-                a.stringElement = emt_1;
+                a.stringElement = QString(emt_1);
                 a.stringNumber = string;
                 errors.insert(a);
             }
@@ -168,12 +169,14 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
                     a.type = Error::moreThanOneModeAccordance;
                     a.moreThanOneModeAccordanceString.append(string);
                     a.moreThanOneModeAccordanceContent.append(described);
-                    a.moreThanOneModeAccordanceContent.append(emt_1);
+                    a.moreThanOneModeAccordanceContent.append(QString(emt_1));
                     a.moreThanOneModeAction = i;
                     errors.insert(a);
                 }
             }
         }
+
+        string++;
     }
 }
 
@@ -187,13 +190,12 @@ void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<i
     }
     for (int i = 0; i < actionAfterAction.length(); i++)
     {
-        int j = actionAfterAction[i];
-        int jabs = abs(j);
+        int jabs = abs(actionAfterAction[i]);
         if (accordModeAction[jabs].isNull())
         {
             Error a;
             a.type = Error::noAccordance;
-            a.positionElement = jabs;
+            a.positionElement = QString::number(jabs);
             a.positionNumber = i;
             errors.insert(a);
         }
@@ -217,10 +219,10 @@ void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<in
         else if (j < 0)
         {
             int found = -1;
-            int absj = abs(j);
-            for (int k = unfinished.length() - 1; k > -1; k++)
+            j *= -1;
+            for (int k = unfinished.length() - 1; k > -1; k--)
             {
-                if (unfinished[k] == absj)
+                if (unfinished[k] == j)
                 {
                     found = k;
                 }
@@ -233,12 +235,15 @@ void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<in
             {
                 Error a;
                 a.type = Error::endWithNoStart;
-                a.positionElement = absj;
+                a.positionElement = QString::number(j);
                 a.positionNumber = i;
                 errors.insert(a);
             }
         }
-        int key = unfinished.last();
+        int key;
+        if (unfinished.isEmpty())
+            key = 0;
+        else key = unfinished.last();
         QString current_mode = accordModeAction[key];
         modeAfterMode.append(current_mode);
     }
