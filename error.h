@@ -71,10 +71,8 @@ public:
 
         if (type == moreThanOneModeAccordance)
         {
-            return ("Two modes for action \"" + QString::number(moreThanOneModeAction) + "\": \""
-            + moreThanOneModeAccordanceContent[0] + "\" (str: " + QString::number(moreThanOneModeAccordanceString[0])
-            + ") and \"" + moreThanOneModeAccordanceContent[1] + "\" (str: " +
-            QString::number(moreThanOneModeAccordanceString[1]) + ").");
+            return ("Mode \"" + moreThanOneModeAccordanceContent[0] + "\" is initial for action \"" + QString::number(moreThanOneModeAction) + "\". You can not correspond the said action with \""
+            + moreThanOneModeAccordanceContent[1] + "\" (str: " + QString::number(moreThanOneModeAccordanceString[1]) + ").");
         }
 
         if (type == inFileNotExist)

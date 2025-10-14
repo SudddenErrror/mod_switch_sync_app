@@ -15,8 +15,11 @@ bool ifIntegerInRange (QString element, int min, int max){
 
 QString whatIsElement(QString element, int el_num)
 {
+    if (element == "") return "none";
+
     if (el_num == 1)
     {
+
         bool ok;
         int num = element.toInt(&ok);
 
@@ -157,7 +160,7 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
             }
             else
             {
-                int i = emt_2.toInt();
+                int i = abs(emt_2.toInt());
                 if (accordModeAction[i].isNull())
                 {
                     accordModeAction[i] = emt_1;
@@ -167,9 +170,10 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
                     QString described = accordModeAction[i];
                     Error a;
                     a.type = Error::moreThanOneModeAccordance;
-                    a.moreThanOneModeAccordanceString.append(string);
                     a.moreThanOneModeAccordanceContent.append(described);
+                    a.moreThanOneModeAccordanceString.append(string);
                     a.moreThanOneModeAccordanceContent.append(QString(emt_1));
+                    a.moreThanOneModeAccordanceString.append(string);
                     a.moreThanOneModeAction = i;
                     errors.insert(a);
                 }
