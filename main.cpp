@@ -122,18 +122,18 @@ int main(int argc, char *argv[])
                     secondRow.append("      ");
                     secondRow.append(modeAfterMode[i+1]);
 
-                    // Используем поток QTextStream для удобной записи
-                    QTextStream out(&outputFile);
-
-                    out.setCodec("Windows-1251");
-
-                    // Записываем первую строку
-                    out << firstRow << endl;
-
-                    // Записываем вторую строку
-                    out << secondRow << endl;
-
                 }
+
+                // Используем поток QTextStream для удобной записи
+                QTextStream out(&outputFile);
+
+                out.setCodec("Windows-1251");
+
+                // Записываем первую строку
+                out << firstRow << endl;
+
+                // Записываем вторую строку
+                out << secondRow << endl;
 
             }
 
