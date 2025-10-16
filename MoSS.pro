@@ -21,7 +21,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         error.cpp \
         main.cpp \
-        only_map.cpp \
         sync.cpp
 
 # Default rules for deployment.
@@ -31,6 +30,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     error.h \
-    only_map.h \
-    sync.h \
-    test_sync.h
+    sync.h

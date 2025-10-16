@@ -13,21 +13,15 @@
 
 using namespace std;
 
+/*!
+    \brief Главный исполняемый файл
+*/
 int main(int argc, char *argv[])
 {
     set<Error> errors;
     QList<int> actionAfterAction;
     QMap<int, QString> accordModeAction;
     QList<QString> modeAfterMode;
-
-    //QCoreApplication a(argc, argv);
-
-    // Получаем список всех переданных аргументов
-    //QStringList args = QCoreApplication::arguments();
-
-    /*string input;
-    cout << " ";
-    cin >> input;*/
 
     if (argc < 4) {
             std::cerr << "Ошибка! Необходимо передать путь к файлам." << std::endl;
@@ -191,8 +185,6 @@ int main(int argc, char *argv[])
 
     // Закрываем файл
     outputFile.close();
-
-    //return a.exec();
 
     return 0;
 }

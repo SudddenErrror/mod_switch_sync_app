@@ -1,5 +1,8 @@
 #include "sync.h"
 
+/*!
+    \brief Реализация функций, объявленных в файле sync.h
+*/
 bool ifIntegerInRange (QString element, int min, int max){
     bool ok;
     int num = element.toInt(&ok);

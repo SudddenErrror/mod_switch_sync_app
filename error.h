@@ -5,10 +5,18 @@
 
 using namespace std;
 
+/*!
+    \brief Класс для фиксирования ошибок
+
+    Данный класс предназначен для фиксирования ошибок, происходящих в ходе работы программы, и генерации сообщений о зафиксированных ошибках в дальнейшем
+*/
 class Error
 {
 public:
     Error();
+    /*!
+        \brief Перечисление типов ошибок
+    */
     enum ErrorType {moreThanOneString, notInteger, noModeForAction, noActionForMode, noStartingMode, noAccordance,
                     endWithNoStart, moreThanOneModeAccordance, inFileNotExist, outFileCreateFail};
     ErrorType type = moreThanOneString;
