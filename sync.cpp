@@ -80,7 +80,7 @@ void readUserActions (QString actions, QList<int> &actionAfterAction, set<Error>
 
         if(elements[0] != "")
         {
-            int position = 0;
+            int position = 1;
 
             for(const QString& element : elements)
             {
@@ -203,7 +203,7 @@ void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<i
             Error a;
             a.type = Error::noAccordance;
             a.positionElement = QString::number(jabs);
-            a.positionNumber = i;
+            a.positionNumber = i+1;
             errors.insert(a);
         }
     }
@@ -243,7 +243,7 @@ void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<in
                 Error a;
                 a.type = Error::endWithNoStart;
                 a.positionElement = QString::number(j);
-                a.positionNumber = i;
+                a.positionNumber = i+1;
                 errors.insert(a);
             }
         }
