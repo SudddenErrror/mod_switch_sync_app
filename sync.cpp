@@ -169,6 +169,17 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
                     a.stringNumber = string;
                     errors.insert(a);
                 }
+
+                // если второй элемент не является действием и первый элемент не пустой
+                else if (emt_1 != "")
+                {
+                    // ошибка: нет действия для режима
+                    Error a;
+                    a.type = Error::noActionForMode;
+                    a.stringElement = QString(emt_1);
+                    a.stringNumber = string;
+                    errors.insert(a);
+                }
             }
 
             // если первый элемент является режимом, а второй элемент не является действием
