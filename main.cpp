@@ -165,21 +165,50 @@ int main(int argc, char *argv[])
 
     else
     {
-        QFile outputFile_err("outError.txt");
+        bool fileNotOpenedError = false;
 
-        if (outputFile_err.open(QIODevice::WriteOnly | QIODevice::Text))
+        for (auto i = errors.begin(), end = errors.end(); i != end; ++i)
+        {
+            Error error = *i;
+            if(error.type == Error::inFileNotExist || error.type == Error::outFileCreateFail)
+            {
+                fileNotOpenedError = true;
+            }
+        }
+
+        if (fileNotOpenedError)
         {
 
-            QTextStream out(&outputFile_err);
+            QFile outputFile_err("outError.txt");
 
-            //setlocale(LC_ALL, "Russian");
+            if (outputFile_err.open(QIODevice::WriteOnly | QIODevice::Text))
+            {
+
+                QTextStream out(&outputFile_err);
+
+                //setlocale(LC_ALL, "Russian");
+
+                foreach(const Error& er, errors)
+                {
+                    QString toOut = er.generateErrorMessage();
+                    out << toOut << endl;
+                }
+
+            }
+
+        }
+
+        else
+        {
+            QTextStream out(&outputFile);
+
+            out.setCodec("Windows-1251");
 
             foreach(const Error& er, errors)
             {
                 QString toOut = er.generateErrorMessage();
                 out << toOut << endl;
             }
-
         }
     }
 
