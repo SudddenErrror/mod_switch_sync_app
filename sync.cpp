@@ -106,46 +106,63 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
 {
     char delimiter = '\n';
 
-    // Строка ввода разбивается по переносам
+    // Строка ввода разбивается по переносам на одинарные строки
     QStringList elements = accords.split(delimiter);
 
     int string = 1;
 
+    // Для каждой строки
     for(const QString& element : elements)
     {
         char delimiter_1 = ' ';
+
+        // Строка разбивается по переносам на отдельные элементы
         QStringList emts = element.split(delimiter_1);
 
         {
             int pos = 1;
-            QString emt_1_type, emt_2_type, emt_1, emt_2;
+
+            //ищем первые два элемента
+            QString emt_1_type = "none", emt_2_type = "none", emt_1, emt_2;
+
+            //обход всех элементов
             for(const QString& emt : emts)
             {
+                // если есть первый элемент, определяем его тип
                 if (pos == 1)
                 {
                     emt_1_type = whatIsElement(emt, pos);
                     emt_1 = emt;
                 }
+
+                // если есть второй элемент, определяем его тип
                 if (pos == 2)
                 {
                     emt_2_type = whatIsElement(emt, pos);
                     emt_2 = emt;
                 }
+
                 pos++;
             }
 
+            // если первый элемент является действием
             if (emt_1_type == "int")
             {
+                // ошибка: нет режима для действия
                 Error a;
                 a.type = Error::noModeForAction;
                 a.stringElement = QString(emt_1);
                 a.stringNumber = string;
                 errors.insert(a);
             }
+
+            // если первый элемент не является ни действием, ни режимом
             else if (emt_1_type == "none")
             {
+                // если второй элемент является действием
                 if (emt_2_type == "int")
                 {
+                    // ошибка: нет режима для действия
                     Error a;
                     a.type = Error::noModeForAction;
                     a.stringElement = QString(emt_2);
@@ -153,32 +170,80 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
                     errors.insert(a);
                 }
             }
+
+            // если первый элемент является режимом, а второй элемент не является действием
             else if (emt_2_type.isNull() || emt_2_type == "none")
             {
+                // ошибка: нет действия для режима
                 Error a;
                 a.type = Error::noActionForMode;
                 a.stringElement = QString(emt_1);
                 a.stringNumber = string;
                 errors.insert(a);
             }
+
+            // если первый элемент является режимом, а второй элемент является действием
             else
             {
-                int i = abs(emt_2.toInt());
-                if (accordModeAction[i].isNull())
+                // проверяем, занесено ли данное действие в словарь
+                int action = abs(emt_2.toInt());
+
+                // если ещё не занесено, заносим вместе с режимом
+                if (accordModeAction[action].isNull())
                 {
-                    accordModeAction[i] = emt_1;
+                    accordModeAction[action] = emt_1;
                 }
+
+                // если уже занесено, описываем ошибку
                 else
                 {
-                    QString described = accordModeAction[i];
-                    Error a;
-                    a.type = Error::moreThanOneModeAccordance;
-                    a.moreThanOneModeAccordanceContent.append(described);
-                    a.moreThanOneModeAccordanceString.append(string);
-                    a.moreThanOneModeAccordanceContent.append(QString(emt_1));
-                    a.moreThanOneModeAccordanceString.append(string);
-                    a.moreThanOneModeAction = i;
-                    errors.insert(a);
+                    // проверяем, описана ли уже данная ошибка
+                    bool currentActionNotDescribed = true;
+
+                    // перебираем список ошибок
+                    for (auto i = errors.begin(), end = errors.end(); i != end; ++i)
+                    {
+                        Error error = *i;
+                        // если ошибка уже описана, отмечаем это
+                        if(error.type == Error::moreThanOneModeAccordance && error.moreThanOneModeAction == action)
+                        {
+                            currentActionNotDescribed = false;
+                        }
+                    }
+
+                    // если ошибка ещё не описана
+                    if(currentActionNotDescribed)
+                    {
+                        // новая ошибка
+                        Error a;
+
+                        // тип - более одного соответствия
+                        a.type = Error::moreThanOneModeAccordance;
+                        a.moreThanOneModeAction = action;
+
+                        int error_string = 0;
+
+                        // Для каждой строки
+                        for (const QString& emt : elements)
+                        {
+                            // номер строки
+                            error_string++;
+
+                            // делим строку на элементы
+                            QStringList emts = emt.split(' ');
+
+                            // если в строке хотя бы два элемента и второй элемент является искомым действием
+                            if(emts.length() > 1 && emts[0] != "" && emts[1].toInt() == action)
+                            {
+                                // добавляем режим и номер страницы в описание ошибки
+                                a.moreThanOneModeAccordanceContent.append(emts[0]);
+                                a.moreThanOneModeAccordanceString.append(error_string);
+                            }
+                        }
+
+                        // добавляем ошибку в список ошибок
+                        errors.insert(a);
+                    }
                 }
             }
         }
