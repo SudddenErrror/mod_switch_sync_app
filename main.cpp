@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
         if (fileNotOpenedError)
         {
 
-            QFile outputFile_err("outError.txt");
+            QFile outputFile_err("failedToOpenFile.txt");
 
             if (outputFile_err.open(QIODevice::WriteOnly | QIODevice::Text))
             {
