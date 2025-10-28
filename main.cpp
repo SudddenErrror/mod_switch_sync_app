@@ -14,7 +14,7 @@
 using namespace std;
 
 /*!
-    \brief Главный исполняемый файл
+    \brief Главная исполняемая функция
 */
 int main(int argc, char *argv[])
 {

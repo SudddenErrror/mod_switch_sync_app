@@ -1,7 +1,7 @@
 #include "sync.h"
 
 /*!
-    \brief Реализация функций, объявленных в файле sync.h
+    \brief Данная функция определяет, находится ли элемент в пределах заданного числового диапазона
 */
 bool ifIntegerInRange (QString element, int min, int max){
     bool ok;
@@ -16,6 +16,11 @@ bool ifIntegerInRange (QString element, int min, int max){
     return true;
 }
 
+/*!
+    \brief Данная функция определяет тип элемента
+
+    Функция возвращает тип элемента, поданного на вход ("int" либо "string". В случае, если элемент не является ни int'ом, ни строкой, возвращается "none")
+*/
 QString whatIsElement(QString element, int el_num)
 {
     if (element == "") return "none";
@@ -51,6 +56,11 @@ QString whatIsElement(QString element, int el_num)
     return "none";
 }
 
+/*!
+    \brief Данная функция определяет, была ли ошибка описана ранее
+
+    Функция возвращает true или false в зависимости от того, содержит ли словарь ошибку заданного типа, в которой упоминается заданный элемент
+*/
 bool errorDescribed (set<Error> &errors, int action, Error::ErrorType type)
 {
     foreach(const Error& er, errors)
@@ -63,6 +73,11 @@ bool errorDescribed (set<Error> &errors, int action, Error::ErrorType type)
     return false;
 }
 
+/*!
+    \brief Функция для считывания действий пользователя
+
+    Функция принимает строку с действиями пользователя и приводит её к формату списка
+*/
 void readUserActions (QString actions, QList<int> &actionAfterAction, set<Error> &errors)
 {
     if (actions.contains("\n"))
@@ -105,6 +120,11 @@ void readUserActions (QString actions, QList<int> &actionAfterAction, set<Error>
     }
 }
 
+/*!
+    \brief Функция для считывания соответствий типа "режим действие"
+
+    Функция принимает строку с соответствиями типа "режим действие" и приводит её к формату словаря
+*/
 void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction, set<Error> &errors)
 {
     char delimiter = '\n';
@@ -266,6 +286,11 @@ void readUserAccordances (QString accords, QMap<int, QString> &accordModeAction,
     }
 }
 
+/*!
+    \brief Функция для проверки заранее считанных и систематизированных данных из входных файлов
+
+    Функция принимает список действий пользователя и словарь соответствий и проверяет действия на предмет их наличия в словаре
+*/
 void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<int> &actionAfterAction, set<Error> &errors)
 {
     if (accordModeAction[0].isNull())
@@ -288,6 +313,11 @@ void checkAccordances (const QMap<int, QString> &accordModeAction, const QList<i
     }
 }
 
+/*!
+    \brief Функция для генерации списка переключения режимов
+
+    Функция принимает список действий пользователя и словарь соответствий и составляет на их основе последовательность переключения режимов
+*/
 void generateActionModeLists (const QList<int> &actionAfterAction, const QMap<int, QString> &accordModeAction, QList<QString> &modeAfterMode, set<Error> &errors)
 {
     QString start = accordModeAction[0];
