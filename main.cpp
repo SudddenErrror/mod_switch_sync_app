@@ -52,16 +52,12 @@ int main(int argc, char *argv[])
 
             QTextStream streamIn1(&firstInputFile);
             dataFromFirstFile = streamIn1.readAll(); // Чтение всего содержимого
-            QString contentStr1(dataFromFirstFile.constData());
-            dataFromFirstFile = contentStr1.replace("\r", "");
             firstInputFile.close();
 
             readUserActions(dataFromFirstFile, actionAfterAction, errors);
 
             QTextStream streamIn2(&secondInputFile);
             dataFromSecondFile = streamIn2.readAll(); // Чтение всего содержимого
-            QString contentStr2(dataFromSecondFile.constData());
-            dataFromSecondFile = contentStr2.replace("\r", "");
             secondInputFile.close();
 
             readUserAccordances(dataFromSecondFile, accordModeAction, errors);
@@ -105,15 +101,47 @@ int main(int argc, char *argv[])
                 QString firstRow;
                 QString secondRow;
 
-                secondRow.append(accordModeAction[0]);
+                secondRow.append(modeAfterMode[0]);
 
                 for(int i = 0; i < actionAfterAction.length(); i++)
                 {
+                    int string_length = 0;
 
-                    firstRow.append("      ");
+                    for(int j = 0; j < modeAfterMode[i].length(); j++)
+                    {
+                        string_length++;
+                        QString characterInLowerCase = modeAfterMode[i][j].toLower();
+                        if (modeAfterMode[i][j] != characterInLowerCase)
+                            string_length++;
+                        if (characterInLowerCase != "i" && characterInLowerCase != "j")
+                            string_length++;
+                        if (characterInLowerCase == "w")
+                            string_length++;
+                    }
+
+                    while (string_length > 0)
+                    {
+                        firstRow.append("\t");
+                        secondRow.append("\t");
+                        string_length -= 5;
+                    }
                     firstRow.append(QString::number(actionAfterAction[i]));
 
-                    secondRow.append("      ");
+                    int integer_length = actionAfterAction[i] < 0;
+                    int number_abs = abs(actionAfterAction[i]);
+                    do {
+                        number_abs /= 10;
+                        integer_length++;
+                    } while (number_abs > 0);
+
+                    while (integer_length > 0)
+                    {
+                        integer_length -= 4;
+                        secondRow.append("\t");
+                    }
+
+                    firstRow.append("\t");
+
                     secondRow.append(modeAfterMode[i+1]);
 
                 }

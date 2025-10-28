@@ -78,6 +78,9 @@ void readUserActions (QString actions, QList<int> &actionAfterAction, set<Error>
         // Строка ввода разбивается по пробелам
         QStringList elements = actions.split(delimiter);
 
+        if (elements.last() == "")
+            elements.removeLast();
+
         if(elements[0] != "")
         {
             int position = 1;
